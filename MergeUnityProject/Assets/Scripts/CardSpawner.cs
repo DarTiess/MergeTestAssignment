@@ -1,4 +1,5 @@
-﻿using UI;
+﻿using Card;
+using UI;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -7,9 +8,12 @@ namespace DefaultNamespace
     {
         [SerializeField] private GridSpawner gridSpawner;
         
-        [SerializeField] private Card cardPrefab;
-       
-        public void SpawnRandomCard(CardConfig config)
+        [SerializeField] private Card.Card cardPrefab;
+       /// <summary>
+       /// Spawn card on random position
+       /// </summary>
+       /// <param name="config">Cards configuration</param>
+        public void SpawnCardOnRandomPosition(CardConfig config)
         {
             if (!gridSpawner.HasEmptyGridPositions())
             {
@@ -32,7 +36,7 @@ namespace DefaultNamespace
                 randomGridPosition = new Vector2Int(randomX, randomY);
             } while (gridSpawner.HasCardAtGridPosition(randomGridPosition));
             
-            Card newCard=  gridSpawner.SpawnObjectAtGridPosition(cardPrefab.gameObject, randomGridPosition).GetComponent<Card>();
+            Card.Card newCard=  gridSpawner.SpawnObjectAtGridPosition(cardPrefab.gameObject, randomGridPosition).GetComponent<Card.Card>();
             newCard.Initialize(config);
         }
     }

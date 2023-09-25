@@ -1,4 +1,5 @@
-﻿using DefaultNamespace;
+﻿using Card;
+using DefaultNamespace;
 using UnityEngine;
 
 namespace UI
@@ -8,7 +9,6 @@ namespace UI
         [SerializeField] private CardConfig[] cardConfigs;
         [SerializeField] private Transform container;
         [SerializeField] private CardView cardViewPrefab;
-        [SerializeField] private Card cardprefab;
         [SerializeField] public CardSpawner cardSpawner;
 
         private void Start()
@@ -28,7 +28,7 @@ namespace UI
         
         private void OnItemSelected(CardConfig config)
         {
-           cardSpawner.SpawnRandomCard(config);
+           cardSpawner.SpawnCardOnRandomPosition(config);
         }
     }
 }

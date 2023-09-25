@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cbfc4be7ea845c590675a8b4ae08a6c, type: 3}
   m_Name: Back 1
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: e9b36b9e47f1f49468dc8b9c2a18927d, type: 3}
+  icon:
+  - {fileID: 21300000, guid: 299599986b195ec44ba0d4bf6f4d4804, type: 3}
+  - {fileID: 21300000, guid: e9b36b9e47f1f49468dc8b9c2a18927d, type: 3}
+  - {fileID: 21300000, guid: 1b4ab323c3684824c8c12d284b4688de, type: 3}
+  - {fileID: 21300000, guid: 9ed20a5564e5d694cbf9322747030227, type: 3}
   price: 2
   cardType: 0
   cardLevel: 1
