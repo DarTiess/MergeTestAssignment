@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using UI;
 using UnityEngine;
 
 public class RandomCardSpawner : MonoBehaviour
@@ -36,4 +37,5 @@ public class RandomCardSpawner : MonoBehaviour
             
         gridSpawner.SpawnObjectAtGridPosition(cardPrefab, randomGridPosition);
     }
+   
 }
