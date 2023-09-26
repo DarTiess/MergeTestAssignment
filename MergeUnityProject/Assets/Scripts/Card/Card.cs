@@ -1,4 +1,5 @@
-﻿using Card.States;
+﻿using System;
+using Card.States;
 using UnityEngine;
 using State = Card.States.State;
 
@@ -17,13 +18,17 @@ namespace Card
         private Sprite _currenIcon;
         private CardStateMachine _stateMachine;
         private State _currentState;
-      
-
+        private bool _onComparing;
+        private ParticleSystem _effect;
+        private Vector3 _startPosition;
+        
         public Sprite CurrentIcon => _currenIcon;
+        public event Action CardUpgrade;
 
-        public void Initialize(CardConfig config)
+        public void Initialize(CardConfig config, ParticleSystem effect)
         {
             _config = config;
+            _effect = effect;
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _camera=Camera.main;
             
@@ -32,15 +37,18 @@ namespace Card
             _stateMachine.AddState(new FirstUpdateState(_stateMachine, _spriteRenderer, _config.Icon[1]));
             _stateMachine.AddState(new SecondUpdateState(_stateMachine, _spriteRenderer, _config.Icon[2]));
             _stateMachine.AddState(new FinishedState(_stateMachine, _spriteRenderer, _config.Icon[3]));
+            _stateMachine.AddState(new EndState(_stateMachine, _spriteRenderer, null));
 
            _currenIcon= _stateMachine.SetState<BeginState>();
            _currentState = _stateMachine.GetCurrentState();
+           _startPosition = transform.position;
 
         }
 
         private void OnMouseDown()
         {
             _isSelected = false;
+            _startPosition = transform.position;
             _offsetX = _camera.ScreenToWorldPoint(Input.mousePosition).x-transform.position.x;
             _offsetY = _camera.ScreenToWorldPoint(Input.mousePosition).y-transform.position.y;
         }
@@ -58,22 +66,39 @@ namespace Card
 
         private void OnTriggerStay2D(Collider2D other)
         {
-            if (other.TryGetComponent(out Card card) && _isSelected)
+            if (other.TryGetComponent(out Card card) && _isSelected && !_onComparing)
             {
-                if (HasSameConfig(card.CurrentIcon))
-                {
-                    Debug.Log("Find Same");
-                    card.ChangeIconLevel();
-                    gameObject.SetActive(false);
-                }
+                TryMergeCard(card);
             }
+           
+        }
+
+        private void TryMergeCard(Card card)
+        {
+            if (HasSameConfig(card.CurrentIcon))
+            {
+                MergeCard(card);
+            }
+            else
+            {
+                transform.position = _startPosition;
+            }
+        }
+
+        private void MergeCard(Card card)
+        {
+            _onComparing = true;
+            card.ChangeIconLevel();
+            _effect.transform.position = transform.position;
+            _effect.Play();
+            gameObject.SetActive(false);
         }
 
         private void ChangeIconLevel()
         {
             _currenIcon =_currentState.Exit();
             _currentState = _stateMachine.GetCurrentState();
-           Debug.Log(_currentState.GetType());
+            CardUpgrade?.Invoke();
         }
 
         private bool HasSameConfig(Sprite icon)

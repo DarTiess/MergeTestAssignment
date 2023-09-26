@@ -1,4 +1,5 @@
-﻿using Card;
+﻿using System;
+using Card;
 using DefaultNamespace;
 using UnityEngine;
 
@@ -6,16 +7,20 @@ namespace UI
 {
     public class CardsViewContainer: MonoBehaviour
     {
-        [SerializeField] private CardConfig[] cardConfigs;
         [SerializeField] private Transform container;
-        [SerializeField] private CardView cardViewPrefab;
-        [SerializeField] public CardSpawner cardSpawner;
+        [SerializeField] private CardView cardViewPrefab; 
+      
+        private ICardSpawner _cardSpawner;
+        private CardConfig[] _cardConfigs;
 
-        private void Start()
+        public event Action SelecteCard;
+        public void Init(CardConfig[] cardConfigs,ICardSpawner cardSpawner)
         {
-            for (int i = 0; i < cardConfigs.Length; i++)
+            _cardConfigs = cardConfigs;
+            _cardSpawner = cardSpawner;
+            for (int i = 0; i < _cardConfigs.Length; i++)
             {
-                AddItem(cardConfigs[i]);
+                AddItem(_cardConfigs[i]);
             }
         }
 
@@ -28,7 +33,8 @@ namespace UI
         
         private void OnItemSelected(CardConfig config)
         {
-           cardSpawner.SpawnCardOnRandomPosition(config);
+           _cardSpawner.SpawnCardOnRandomPosition(config);
+           SelecteCard?.Invoke();
         }
     }
 }

@@ -1,6 +1,7 @@
+using DefaultNamespace;
 using UnityEngine;
 
-public class GridSpawner : MonoBehaviour
+public class GridSpawner : MonoBehaviour, IGridInit
 {
     private GameObject[,] _gameObjectGrid;
     
@@ -20,11 +21,20 @@ public class GridSpawner : MonoBehaviour
     /// Size of the grid
     /// </summary>
     public Vector2Int GridSize => gridSize;
+
     private void Start()
     {
         _gameObjectGrid = new GameObject[gridSize.x,gridSize.y];
     }
-    
+
+    public void Init(Vector2Int gridSize, float cellSize, float cellSpacing)
+    {
+        this.gridSize = gridSize;
+        this.cellSize = cellSize;
+        this.cellSpacing = cellSpacing;
+
+    }
+
     /// <summary>
     /// Converts a grid position to a world position
     /// </summary>
@@ -35,8 +45,8 @@ public class GridSpawner : MonoBehaviour
         var offset = gridOrigin.position;
         return (new Vector3(gridPosition.x * (cellSize + cellSpacing), gridPosition.y * (cellSize + cellSpacing)) + offset);
     }
-    
-    
+
+
     /// <summary>
     /// Converts a world position to a grid position
     /// </summary>
@@ -46,7 +56,7 @@ public class GridSpawner : MonoBehaviour
     {
         return new Vector2Int(Mathf.FloorToInt(worldPosition.x / (cellSize + cellSpacing)), Mathf.FloorToInt(worldPosition.y / (cellSize + cellSpacing)));
     }
-    
+
     /// <summary>
     /// Returns the object at the given grid position
     /// </summary>
@@ -56,7 +66,7 @@ public class GridSpawner : MonoBehaviour
     {
         return _gameObjectGrid[gridPosition.x, gridPosition.y];
     }
-    
+
     /// <summary>
     /// Sets the object at the given grid position
     /// </summary>
@@ -67,7 +77,7 @@ public class GridSpawner : MonoBehaviour
         _gameObjectGrid[gridPosition.x, gridPosition.y] = gameObject;
         gameObject.transform.position = GridToWorldPosition(gridPosition);
     }
-    
+
     /// <summary>
     /// Destroys the object at the given grid position
     /// </summary>
@@ -77,8 +87,8 @@ public class GridSpawner : MonoBehaviour
         Destroy(_gameObjectGrid[gridPosition.x, gridPosition.y]);
         _gameObjectGrid[gridPosition.x, gridPosition.y] = null;
     }
-    
-    
+
+
     /// <summary>
     /// Moves the given object to the given grid position
     /// </summary>
@@ -90,7 +100,7 @@ public class GridSpawner : MonoBehaviour
         SetObjectAtGridPosition(gameObject, endPosition);
         gameObject.transform.position = GridToWorldPosition(endPosition);
     }
-    
+
     /// <summary>
     /// Moves the object at the given start position to the given grid position
     /// </summary>
@@ -101,7 +111,7 @@ public class GridSpawner : MonoBehaviour
         var objectToMove = GetObjectAtGridPosition(startPosition);
         MoveObjectToGridPosition(objectToMove, endPosition);
     }
-    
+
     /// <summary>
     /// Checks if there is an object at the given grid position
     /// </summary>
@@ -128,7 +138,7 @@ public class GridSpawner : MonoBehaviour
 
         return false;
     }
-    
+
     /// <summary>
     /// Spawns the given gameObject at the given grid position
     /// </summary>
@@ -142,7 +152,7 @@ public class GridSpawner : MonoBehaviour
         instance.transform.position = GridToWorldPosition(gridPosition);
         return instance;
     }
-    
+
     private void OnDrawGizmosSelected()
     {
         //draw grid
@@ -155,6 +165,9 @@ public class GridSpawner : MonoBehaviour
             }
         }
     }
+}
+
+
 
     
-}
+

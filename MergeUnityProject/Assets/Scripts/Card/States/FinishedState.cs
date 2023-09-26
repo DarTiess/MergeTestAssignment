@@ -8,6 +8,14 @@ namespace Card.States
         {
             
         }
-        
+        public override Sprite Enter()
+        {
+            _spriteRenderer.sprite = _icon;
+            return _icon;
+        }
+        public override Sprite Exit()
+        {
+            return _cardStateMachine.ChangeState<EndState>();
+        }
     }
 }

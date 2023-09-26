@@ -46,11 +46,6 @@ namespace Card.States
             return icon;
         }
 
-        public void Update()
-        {
-            _currentState?.Update();
-        }
-
         public State GetCurrentState()
         {
             return _currentState;

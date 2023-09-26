@@ -17,8 +17,7 @@ namespace Card.States
 
         public virtual Sprite Enter()
         {
-            _spriteRenderer.sprite = _icon;
-            return _icon;
+            return null;
         }
 
         public virtual Sprite Exit()
@@ -26,7 +25,6 @@ namespace Card.States
             return null;
             
         }
-        public virtual void Update(){}
-
+      
     }
 }
