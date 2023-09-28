@@ -1,6 +1,6 @@
 name: MergeUnityProject
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   buildForAllSupportedPlatforms:
@@ -10,7 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           - Android # Build an Android .apk standalone app.
     steps:
       - uses: actions/checkout@v3
