@@ -1,34 +1,58 @@
 name: MergeUnityProject
 
-on: [push]
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  buildForAllSupportedPlatforms:
-    name: Build for ${{ matrix.targetPlatform }}
+  build:
+    name: Build my project
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform:
-          - Android # Build an Android .apk standalone app.
     steps:
-      - uses: actions/checkout@v3
+
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 0
           lfs: true
-      - uses: actions/cache@v3
+
+      # Cache
+      - uses: actions/cache@v2
         with:
           path: Library
-          key: Library-${{ matrix.targetPlatform }}
-          restore-keys: Library-
-      - if: matrix.targetPlatform == 'Android'
-        uses: jlumbroso/free-disk-space@v1.2.0
-      - uses: game-ci/unity-builder@v3
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          key: Library
+
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2
         with:
-          targetPlatform: ${{ matrix.targetPlatform }}
-      - uses: actions/upload-artifact@v3
+          unityVersion: 2022.3.7f1
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v2
         with:
-          name: Build-${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
+          unityVersion: 2022.3.7f1
+          targetPlatform: Android # Build an Android .apk standalone app.
+
+      # Output 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Build
+          path: build
+
+      - name: Zip build
+        run: |
+          pushd build/Android
+          zip -r ../../Android.zip .
+          popd
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Android.zip
+          name: Release ${{ github.ref }}
