@@ -9,6 +9,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        projectPath:
+          - ./
         targetPlatform:
           - Android # Build an Android .apk standalone app.
     steps:
