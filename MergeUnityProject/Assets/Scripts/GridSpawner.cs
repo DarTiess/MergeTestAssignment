@@ -3,19 +3,20 @@ using UnityEngine;
 
 public class GridSpawner : MonoBehaviour, IGridInit
 {
-    private GameObject[,] _gameObjectGrid;
+    protected GameObject[,] _gameObjectGrid;
     
     [SerializeField]
-    private Vector2Int gridSize = new Vector2Int(10, 10);
+    protected Vector2Int gridSize = new Vector2Int(10, 10);
 
     [SerializeField]
-    private float cellSize = 1f;
+    protected float cellSize = 1f;
     
     [SerializeField]
-    private float cellSpacing = 0.1f;
+    protected float cellSpacing = 0.1f;
     
     [SerializeField]
-    private Transform gridOrigin;
+    protected Transform gridOrigin;
+    
 
     /// <summary>
     /// Size of the grid
@@ -32,7 +33,6 @@ public class GridSpawner : MonoBehaviour, IGridInit
         this.gridSize = gridSize;
         this.cellSize = cellSize;
         this.cellSpacing = cellSpacing;
-
     }
 
     /// <summary>
@@ -121,7 +121,7 @@ public class GridSpawner : MonoBehaviour, IGridInit
     {
         return _gameObjectGrid[gridPosition.x, gridPosition.y] != null;
     }
-
+   
     /// <summary>
     /// Checks if there is an empty grid position available on the grid
     /// </summary>
@@ -137,8 +137,8 @@ public class GridSpawner : MonoBehaviour, IGridInit
         }
 
         return false;
-    }
-
+    } 
+    
     /// <summary>
     /// Spawns the given gameObject at the given grid position
     /// </summary>
@@ -166,8 +166,3 @@ public class GridSpawner : MonoBehaviour, IGridInit
         }
     }
 }
-
-
-
-    
-

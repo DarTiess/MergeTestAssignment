@@ -18,5 +18,5 @@ MonoBehaviour:
     SoundType: 0
   - AudioClip: {fileID: 8300000, guid: e7ee25a47d63b46cdaf65480d62b405c, type: 3}
     SoundType: 1
-  - AudioClip: {fileID: 0}
+  - AudioClip: {fileID: 8300000, guid: 0f7d0b7c3397f4dac91f20e8a77d2d57, type: 3}
     SoundType: 2

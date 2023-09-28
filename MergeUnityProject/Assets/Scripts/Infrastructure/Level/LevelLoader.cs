@@ -19,6 +19,9 @@ namespace Infrastructure.Level
             get { return PlayerPrefs.GetInt("NumScene"); }
             set { PlayerPrefs.SetInt("NumScene", value); }
         }
+        /// <summary>
+        /// On Start game Load scene from saved
+        /// </summary>
 
         public void StartGame()
         {
@@ -27,7 +30,9 @@ namespace Infrastructure.Level
         
             LoadScene();    
         }
-
+        /// <summary>
+        /// Load next Level
+        /// </summary>
         public void LoadNextLevel()
         {
             NumLevel += 1;
@@ -35,7 +40,9 @@ namespace Infrastructure.Level
         
             LoadScene();           
         }
-
+        /// <summary>
+        /// Load Scene
+        /// </summary>
         public void LoadScene()
         {
             int numLoadedScene = NumScene;
@@ -45,7 +52,9 @@ namespace Infrastructure.Level
 
             SceneManager.LoadScene(NameScene[numLoadedScene]);
         }
-
+        /// <summary>
+        /// Restart active scene
+        /// </summary>
         public void RestartScene()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

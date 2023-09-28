@@ -5,19 +5,24 @@ using Random = UnityEngine.Random;
 
 namespace DefaultNamespace
 {
-    public class CardSpawner: ICardSpawner, ICardUpgrade
+    public class CardSpawner: ICardSpawner
     {
-        private GridSpawner _gridSpawner;
-        private Card.Card _cardPrefab;
-        private ParticleSystem _explosionEffect;
+        private GridBuilder _cardSpawner;
+        private ICoinsUpdate _coins;
+        private ICoinsAnimationView _coinsAnimation;
 
-        public event Action CardUpgrade;
-
-        public CardSpawner(GridSpawner gridSpawner, Card.Card cardPrefab, ParticleSystem explosEffect)
+        /// <summary>
+        /// Construct
+        /// </summary>
+        /// <param name="cardSpawner"></param>
+        /// <param name="coins"></param>
+        public CardSpawner(GridBuilder cardSpawner, ICoinsUpdate coins, ICoinsAnimationView coinsAnimation)
         {
-            _gridSpawner = gridSpawner;
-            _cardPrefab = cardPrefab;
-            _explosionEffect = explosEffect;
+            _cardSpawner = cardSpawner;
+            _coins = coins;
+            _coinsAnimation = coinsAnimation;
+            _cardSpawner.FillGrid();
+           
         }
         /// <summary>
        /// Spawn card on random position
@@ -25,13 +30,19 @@ namespace DefaultNamespace
        /// <param name="config">Cards configuration</param>
         public void SpawnCardOnRandomPosition(CardConfig config)
         {
-            if (!_gridSpawner.HasEmptyGridPositions())
+            if (!_cardSpawner.HasEmptyGridPositions())
             {
                 Debug.LogError("No empty grid positions!");
                 return;
             }
+            
+            if (_coins.GetCoinsAmount() <=0)
+            {
+                Debug.LogError("You haven't coins!");
+                return;
+            }
         
-            var gridSize = _gridSpawner.GridSize;
+            var gridSize = _cardSpawner.GridSize;
 
             var maxX = gridSize.x;
             var maxY = gridSize.y;
@@ -44,16 +55,14 @@ namespace DefaultNamespace
                 var randomY = Random.Range(0, maxY);
                 
                 randomGridPosition = new Vector2Int(randomX, randomY);
-            } while (_gridSpawner.HasCardAtGridPosition(randomGridPosition));
+            } while (_cardSpawner.HasCardAtGridPosition(randomGridPosition));
             
-            Card.Card newCard=  _gridSpawner.SpawnObjectAtGridPosition(_cardPrefab.gameObject, randomGridPosition).GetComponent<Card.Card>();
-            newCard.Initialize(config, _explosionEffect);
-            newCard.CardUpgrade += OnCardUpgrade;
+            
+            _cardSpawner.SpawnObjectAtFreePosition(randomGridPosition, config);
+            _coins.SpendCoins(1);
+            _coinsAnimation.SpendCoinsAnimation();
         }
 
-        private void OnCardUpgrade()
-        {
-            CardUpgrade?.Invoke();
-        }
+       
     }
 }

@@ -224,6 +224,8 @@ MonoBehaviour:
   timeWin: 2
   timeLose: 1.5
   canvasPrefab: {fileID: 2201677340117411288, guid: 7b27a44f9887a074fbd21d4c1e5dd833, type: 3}
+  coinAnimateSize: 1.5
+  coinAnimatedDuration: 0.3
   cardPrefab: {fileID: -5804178302397320506, guid: c792cfff3b6a80349925b9626267f16e, type: 3}
   cardConfigs:
   - {fileID: 11400000, guid: 01e7a9615be5d12479fc463334bc1484, type: 2}
@@ -231,7 +233,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 788ce6f40b754334a919c99d8af31397, type: 2}
   - {fileID: 11400000, guid: 8b7cee0cb6444114b81d1140f393bdef, type: 2}
   exposionEffect: {fileID: 19829088, guid: 44053fcf5ec3ddc429076f23c65685ef, type: 3}
-  gridSpawner: {fileID: 1591539456}
+  coinsAnimationPrefab: {fileID: 6898059386496017340, guid: fb9866b710824fa45928105c5a8acc68, type: 3}
+  coinsUiPosition: {fileID: 760924558}
+  spendCoinsUiPosition: {fileID: 920662155}
+  animationDuration: 0.5
+  _cardGridBuilder: {fileID: 1591539457}
   gridSize: {x: 5, y: 9}
   cellSize: 1
   cellSpacing: 0.1
@@ -554,6 +560,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &760924557
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 760924558}
+  m_Layer: 0
+  m_Name: CoinsAddPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &760924558
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760924557}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.02, y: 6.79, z: -0.03255458}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &873688031
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,7 +620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c344c7abc2764c32aa00bf274cf8fefd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSpawner: {fileID: 1591539456}
+  gridSpawner: {fileID: 0}
   cardPrefab: {fileID: 682125721358186655, guid: c792cfff3b6a80349925b9626267f16e, type: 3}
 --- !u!4 &873688033
 Transform:
@@ -600,6 +637,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &920662154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 920662155}
+  m_Layer: 0
+  m_Name: CoinsSpendPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &920662155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920662154}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.09, y: -6.86, z: -0.03255458}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1591539454
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,7 +677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1591539455}
-  - component: {fileID: 1591539456}
+  - component: {fileID: 1591539457}
   m_Layer: 0
   m_Name: GridSpawner
   m_TagString: Untagged
@@ -633,7 +701,7 @@ Transform:
   - {fileID: 1946409174}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1591539456
+--- !u!114 &1591539457
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -642,12 +710,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1591539454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c511d41be1105844d92de7bd1839e9ee, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b06165ac77fbca48a03800c64ce5c5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 11, y: 11}
-  cellSize: 1
-  cellSpacing: 0.15
   gridOrigin: {fileID: 1946409174}
 --- !u!1 &1946409173
 GameObject:
@@ -691,3 +756,5 @@ SceneRoots:
   - {fileID: 873688033}
   - {fileID: 103226691}
   - {fileID: 276500710}
+  - {fileID: 760924558}
+  - {fileID: 920662155}

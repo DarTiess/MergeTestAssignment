@@ -6,6 +6,6 @@
         Light =1,
         Pill =2,
         Potion =3,
-        Weapon =4,
+        Circle =4,
     }
 }

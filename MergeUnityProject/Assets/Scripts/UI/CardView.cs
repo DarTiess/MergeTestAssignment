@@ -2,15 +2,15 @@
 using Card;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace UI
 {
     [RequireComponent(typeof(Button))]
     public class CardView : MonoBehaviour
     {
-        [SerializeField] private Image iconImage;
-        private int _price;
+        [SerializeField] 
+        private Image iconImage;
+        
         private CardConfig _config;
         private Button _selectedButton;
 
@@ -32,6 +32,15 @@ namespace UI
         {
             _selectedButton.onClick.RemoveListener(OnCardSelected);
         }
+
+        /// <summary>
+        /// Post action if card was selected
+        /// </summary>
+        private void OnCardSelected()
+        {
+            SelectedCard?.Invoke(_config);
+        }
+
         /// <summary>
         /// Initialize cards parameters
         /// </summary>
@@ -39,15 +48,7 @@ namespace UI
         public void Initialize(CardConfig config)
         {
             _config = config;
-            //int rndIcon = Random.Range(0, _config.Icon.Length);
             iconImage.sprite = _config.Icon[0];
-        }
-        /// <summary>
-        /// Post action if card was selected
-        /// </summary>
-        private void OnCardSelected()
-        {
-            SelectedCard?.Invoke(_config);
         }
     }
 }

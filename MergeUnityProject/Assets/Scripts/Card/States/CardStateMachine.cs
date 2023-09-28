@@ -9,11 +9,19 @@ namespace Card.States
         private State _currentState;
         private Dictionary<Type, State> _states = new Dictionary<Type, State>();
 
+        /// <summary>
+        /// Fill state list
+        /// </summary>
+        /// <param name="state"></param>
         public void AddState(State state)
         {
             _states.Add(state.GetType(), state);
         }
-
+        /// <summary>
+        /// set current state
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>icon of state</returns>
         public Sprite SetState<T>() where T : State
         {
             Sprite icon = null;
@@ -32,7 +40,11 @@ namespace Card.States
 
             return icon;
         }
-
+        /// <summary>
+        /// Change current state from current
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>icon of next state</returns>
         public Sprite ChangeState<T>() where T:State
         {
             Sprite icon = null;
@@ -45,7 +57,10 @@ namespace Card.States
             }
             return icon;
         }
-
+        /// <summary>
+        /// Get current state
+        /// </summary>
+        /// <returns>state</returns>
         public State GetCurrentState()
         {
             return _currentState;

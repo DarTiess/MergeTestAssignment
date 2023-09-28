@@ -2,8 +2,8 @@
 {
     public interface ILevelManager
     {
-        void LevelStart();
         void PauseGame();
         void PlayGame();
+        void LevelWin();
     }
 }

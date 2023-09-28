@@ -5,18 +5,23 @@ namespace DefaultNamespace
     public class AudioPlayer
     {
         private AudioSource _musicSource;
-        private AudioSource _soundsSource;
         private AudioClip _musicInGame;
 
-        public AudioPlayer(AudioSource musicSource, AudioSource soundsSource, AudioClip musicInGame)
+        /// <summary>
+        /// Construct
+        /// </summary>
+        /// <param name="musicSource"></param>
+        /// <param name="musicInGame"></param>
+        public AudioPlayer(AudioSource musicSource, AudioClip musicInGame)
         {
             _musicSource = musicSource;
-            _soundsSource = soundsSource;
             _musicInGame = musicInGame;
 
             InitMusicInGame();
         }
-
+        /// <summary>
+        /// Initialize music in game, and play
+        /// </summary>
         private void InitMusicInGame()
         {
             _musicSource.clip = _musicInGame;

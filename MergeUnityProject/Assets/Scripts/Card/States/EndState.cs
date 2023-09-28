@@ -5,17 +5,24 @@ namespace Card.States
 {
     public class EndState: State
     {
-        public EndState(CardStateMachine cardStateMachine, SpriteRenderer spriteRenderer, Sprite icon) : base(cardStateMachine, spriteRenderer, icon)
+        private Card _card;
+        /// <summary>
+        /// Constructor of class
+        /// </summary>
+        /// <param name="cardStateMachine"></param>
+        /// <param name="spriteRenderer"></param>
+        /// <param name="icon"></param>
+        public EndState(Card card)
         {
-            
+            _card = card;
         }
+        /// <summary>
+        /// On Enter deactivate card
+        /// </summary>
+        /// <returns>null</returns>
         public override Sprite Enter()
         {
-            _spriteRenderer.gameObject.transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InBounce)
-                           .OnComplete(() =>
-                           {
-                               _spriteRenderer.gameObject.SetActive(false);
-                           });
+            _card.HideCard();
             return null;
         }
     }
