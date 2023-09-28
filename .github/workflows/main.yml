@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         projectPath:
-          - MergeUnityProject~/
+          - MergeUnityProject/
         targetPlatform:
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - Android # Build an Android .apk standalone app.
