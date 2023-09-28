@@ -1,58 +1,34 @@
 name: MergeUnityProject
 
-on:
-  push:
-    tags:
-      - '*'
-
-env:
-  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+on: [push, pull_request]
 
 jobs:
-  build:
-    name: Build my project
+  buildForAllSupportedPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - Android # Build an Android .apk standalone app.
     steps:
-
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
+          fetch-depth: 0
           lfs: true
-
-      # Cache
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: Library
-          key: Library
-
-      # Test
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v2
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
+      - if: matrix.targetPlatform == 'Android'
+        uses: jlumbroso/free-disk-space@v1.2.0
+      - uses: game-ci/unity-builder@v3
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          unityVersion: 2022.3.7f1
-
-      # Build
-      - name: Build project
-        uses: game-ci/unity-builder@v2
+          targetPlatform: ${{ matrix.targetPlatform }}
+      - uses: actions/upload-artifact@v3
         with:
-          unityVersion: 2022.3.7f1
-          targetPlatform: Android # Build an Android .apk standalone app.
-
-      # Output 
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Build
-          path: build
-
-      - name: Zip build
-        run: |
-          pushd build/Android
-          zip -r ../../Android.zip .
-          popd
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: Android.zip
-          name: Release ${{ github.ref }}
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
