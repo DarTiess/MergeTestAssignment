@@ -1,7 +1,10 @@
-name: Build project
+name: Build Project
 
-on: [push]
-
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
@@ -10,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - Android # Build an Android .apk standalone app.
         projectPath:
-          - MyProjectName # ** this is what you're looking for **
+          - "Color Blocks"
     steps:
       - uses: actions/checkout@v2
         with:
@@ -20,7 +23,7 @@ jobs:
           lfs: true
       - uses: actions/cache@v2
         with:
-          path: Library
+          path: ${{ matrix.projectPath }}/Library                      
           key: Library-${{ matrix.targetPlatform }}
           restore-keys: Library-
       - uses: game-ci/unity-builder@v2
@@ -28,6 +31,14 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: "2019.2.11f1"
+          androidAppBundle: true
+          androidKeystoreName: user.keystore
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
       - uses: actions/upload-artifact@v2
         with:
           name: Build-${{ matrix.targetPlatform }}
